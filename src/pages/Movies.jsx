@@ -19,7 +19,7 @@ export default function Movies() {
     }, [dispatch]);
   
     useEffect(()=> {
-      if (genresLoaded) dispatch(fetchMovieList({ category: 'movie', type: "latest"}));
+      if (genresLoaded) dispatch(fetchCategory({ category: 'movie', type: "latest"}));
     }, [dispatch, genresLoaded]);
     
     window.onscroll = () => {

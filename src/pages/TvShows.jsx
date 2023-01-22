@@ -19,7 +19,7 @@ export default function TvShows() {
     }, [dispatch]);
   
     useEffect(()=> {
-      if (genresLoaded) dispatch(fetchMovieList({ category: 'tv', type: "popular"}));
+      if (genresLoaded) dispatch(fetchCategory({ category: 'tv', type: "popular"}));
     }, [dispatch, genresLoaded]);
     
     window.onscroll = () => {
