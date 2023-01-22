@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMovieList, getGenres } from "../store";
+import { fetchCategory, getGenres } from "../store";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Slider from "../components/Slider";
