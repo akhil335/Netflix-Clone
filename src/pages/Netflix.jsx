@@ -13,7 +13,7 @@ import Slider from "../components/Slider";
 function Netflix() {
   const [isScrolled, setIsScrolled] = useState(false);
   const genresLoaded = useSelector((state) => state.netflix.genresLoaded);
-  const movies = useSelector((state) => state.netflix.movies)
+  const movies = useSelector((state) => state.netflix.movies);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
