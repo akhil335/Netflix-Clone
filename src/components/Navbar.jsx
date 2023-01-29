@@ -19,9 +19,9 @@ function Navbar({isScrolled}) {
     const [inputHover, setInputHover] = useState(false);
     const navigate = useNavigate();
 
-        onAuthStateChanged(firebaseAuth, (currentUser) => {
-            if(!currentUser) navigate("/login")
-          })
+    onAuthStateChanged(firebaseAuth, (currentUser) => {
+        if (!currentUser) navigate("/login");
+    });
 
   return <Container>
     <nav className={`flex ${isScrolled ? 'scrolled' : ""}`}>

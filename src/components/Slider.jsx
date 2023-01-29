@@ -4,7 +4,6 @@ import CardSlider from "../components/CardSlider";
 export default function Slider({movies}) {
 
     const getMoviesFromRange = (from, to) => {
-        // console.log(movies)
         return movies.slice(from, to);
     }
     return <div>

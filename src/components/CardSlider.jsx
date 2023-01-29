@@ -4,20 +4,20 @@ import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import styled from "styled-components";
 
 export default function CardSlider({ type, data }) {
+    // console.log(data, 'data')
     const [showControls, setShowControls] = useState(false);
     const [sliderPosition, setSliderPosition] = useState(0);
     const listRef = useRef();
 
     const handleDirection = (direction) => {
         let distance = listRef.current.getBoundingClientRect().x - 70;
-        console.log(listRef)
         if(direction === "left" && sliderPosition > 0) {
-            listRef.current.style.transform = `translateX(${230 + distance + 40}px)`;
-            setSliderPosition(sliderPosition - 1)
-        }
-        if(direction === "right" && sliderPosition < 3) {
+                listRef.current.style.transform = `translateX(${230 + distance + 40}px)`;
+                setSliderPosition(sliderPosition - 1)
+            }
+            if(direction === "right" && sliderPosition < 3) {
             listRef.current.style.transform = `translateX(${-230 + distance}px)`;
-            setSliderPosition(sliderPosition + 1)
+            setSliderPosition(prevState => prevState + 1)
         }
     };
 
@@ -81,6 +81,3 @@ const Container = styled.div`
             right: 0;
         }
     }`;
-
-
-    // export default React.memo(Counts);

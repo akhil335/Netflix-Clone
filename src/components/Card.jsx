@@ -1,16 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { IoPlayCircleSharp } from "react-icons/io5";
 import { RiThumbDownFill, RiThumbUpFill } from "react-icons/ri";
-import { BsCheck } from "react-icons/bs";
+import { BsBookmarkCheck } from "react-icons/bs";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BiChevronDown } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import video from "../assets/videos/stranger-things-trailer.mp4";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { removeUseLikesMovies } from "../store";
 
 export default function Card({ movieData, isLiked=false }) {
     const [isHovered, setIsHovered] = useState(false);
+    const [email, setEmail] = useState(undefined);
+    const userInfo = useSelector((state) => state.netflix.user);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    // User email saving in email state
+    useEffect(() => {
+        setEmail(userInfo);
+      }, [userInfo]);
+    
+    // Adding user Watchlist in db
+    const addToList = async () => {
+        try {
+            await axios.post("http://localhost:5000/api/user/addWatchList", { email, data: movieData });
+        } catch (error) {
+            return error;
+        }
+    }
 
     return <Container onMouseEnter={()=>setIsHovered(true)} onMouseLeave={()=>setIsHovered(false)}>
         <img src={`https://image.tmdb.org/t/p/w500${movieData.image}`} alt={movieData.name} />
@@ -32,8 +52,8 @@ export default function Card({ movieData, isLiked=false }) {
                             <RiThumbDownFill title="Dislike" />
                             {
                                 isLiked ? 
-                                    <BsCheck title="Remove From List" /> :
-                                    <AiOutlinePlus title="Add to my list"/>
+                                    <BsBookmarkCheck color="red" title="Remove to my list" onClick={ ()=> dispatch(removeUseLikesMovies({ email, movieId: movieData.id, movie: movieData.name })) } /> :
+                                    <AiOutlinePlus title="Add to my list" onClick={ ()=> addToList() } />
                             }
                         </div>
                         <div className="info">
@@ -69,10 +89,10 @@ const Container = styled.div`
     }
     .hover {
         z-index: 90;
-        height: max-content;
-        width: 20rem;
+        height: 100%;
+        width: 100%;
         position: absolute;
-        top: -18vh;
+        bottom: 13vh;
         left: 0;
         border-radius: 0.3rem;
         box-shadow: rgb(0 0 0 / 75%) 0px 3px 10px;

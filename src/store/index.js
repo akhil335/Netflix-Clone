@@ -1,11 +1,14 @@
 import { configureStore, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { TMBD_BASE_URL, API_KEY } from "../utils/constants"
+import { firebaseAuth } from "../utils/firebase-config";
 
 const initialState = {
     movies: [],
     genresLoaded: false,
-    genres: []
+    genres: [],
+    user: null,
+    bookmarkedMovies: null
 }
 
 export const getGenres = createAsyncThunk("netflix/genres", async ()=> {
@@ -48,8 +51,8 @@ export const fetchMovies = createAsyncThunk("netflix/trending", async ({type}, t
 });
 
 export const fetchCategory = createAsyncThunk("netflix/movies", async ({category, type}, thunkApi) => {
-    const { netflix: { movies }} = thunkApi.getState();
-    const data =  getRawData(`${TMBD_BASE_URL}/${category}/${type}?api_key=${API_KEY}`, movies, true);
+    const { netflix: { genres }} = thunkApi.getState();
+    const data =  getRawData(`${TMBD_BASE_URL}/${category}/${type}?api_key=${API_KEY}`, genres, true);
     return data;
 });
 
@@ -58,6 +61,34 @@ export const fetchDataByGenre = createAsyncThunk("netflix/moviesByGenre", async 
     const data =  getRawData(`${TMBD_BASE_URL}/discover/${type}?api_key=${API_KEY}&with_genres=${genre}`, genres, true);
     return data;
 });
+
+// Fetch user details from from firebase
+export const userInfo = createAsyncThunk("netflix/userInfo", async () => {
+    return await new Promise(resolve => {
+        firebaseAuth.onAuthStateChanged(currentUser => {
+            if (currentUser) {
+                resolve(currentUser.email);
+            }
+        });
+    });
+    // return firebaseAuth.currentUser.email;
+});
+
+// Fetch watchList from db
+export const getUserLikedMovies = createAsyncThunk("netflix/LikedMovies", async (email) => {
+    const { data: { bookmarkedMovies }} = await axios.get(`http://localhost:5000/api/user/likedmovies/${email}`);
+    return bookmarkedMovies;
+}); 
+
+// deleting watchList movie from db
+export const removeUseLikesMovies = createAsyncThunk("netflix/removeLikedMovies", async ({ email, movieId, movie }) => {
+    console.log({email, movieId}, movie)
+    const { data: { bookmarkedMovies }} = await axios.put(`http://localhost:5000/api/user/deleteWatchListMovie`, {
+        email,
+        movieId
+    });
+    return bookmarkedMovies;
+}); 
 
 
 const NeflixSlice = createSlice({
@@ -76,6 +107,17 @@ const NeflixSlice = createSlice({
         })
         builder.addCase(fetchDataByGenre.fulfilled, (state, action) => {
             state.movies = action.payload;
+        })
+        builder.addCase(userInfo.fulfilled, (state, action) => {
+            state.user = action.payload;
+        })
+        builder.addCase(getUserLikedMovies.fulfilled, (state, action) => {
+            state.bookmarkedMovies = action.payload;
+            
+    // console.log(state.bookmarkedMovies, 'index.js')
+        })
+        builder.addCase(removeUseLikesMovies.fulfilled, (state, action) => {
+            state.bookmarkedMovies = action.payload;
         })
     }
 })
