@@ -6,14 +6,10 @@ import logo from "../assets/logo.svg"
 function Header(props) {
   const navigate = useNavigate();
   return (
-   <Container login = {props.login} className="flex a-center j-between">
+   <Container login = {props.login} className="header flex a-center j-between">
     <div className="logo">
       <img src={logo} alt="logo" />
     </div>
-    {/* <button onClick={() => navigate(props.login ? "/login" : "/signup")}>
-    {props.login ? "Sign In" : "Sign Up"}
-    </button> */}
-
     {props.login && 
      <button onClick={() => navigate(props.login ? "/login" : "/signup")}>
      Login

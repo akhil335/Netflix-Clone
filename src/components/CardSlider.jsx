@@ -2,11 +2,13 @@ import React, { useRef, useState } from "react";
 import Card from "./Card";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import styled from "styled-components";
+import NotAvailable from "../pages/NotAvailable";
+import { useSelector } from "react-redux";
 
 export default function CardSlider({ type, data }) {
-    // console.log(data, 'data')
     const [showControls, setShowControls] = useState(false);
     const [sliderPosition, setSliderPosition] = useState(0);
+    const bookmarkedMovies = useSelector((state) => state.netflix.bookmarkedMovies);
     const listRef = useRef();
 
     const handleDirection = (direction) => {
@@ -30,9 +32,9 @@ export default function CardSlider({ type, data }) {
                     <AiOutlineLeft onClick={()=> handleDirection("left")} />
                 </div>
                 <div className="flex slider" ref={listRef}>
-                {
+                {!data.length ? <NotAvailable alert={"Data not available"} />  :
                 data.map((movie, index) => {
-                    return <Card movieData={movie} index={index} key={movie.id}></Card>
+                    return <Card movieData={movie} index={index} key={movie.id} isLiked={bookmarkedMovies.some(({id}) => id === movie.id)} />
                 })
                 }
                 </div>

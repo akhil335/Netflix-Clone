@@ -32,7 +32,7 @@ export default function TvShows() {
          <Navbar isScrolled={isScrolled}></Navbar>
          <div className="data">
          <SelectGenre genres={genre} type="tv" />
-            {
+            {!movies.length ? <NotAvailable alert={"Data not available"} />  :
                 movies.length ? <Slider movies={movies} /> : <NotAvailable />
             }
          </div>

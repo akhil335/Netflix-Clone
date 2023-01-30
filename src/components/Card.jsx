@@ -13,6 +13,7 @@ import { removeUseLikesMovies } from "../store";
 
 export default function Card({ movieData, isLiked=false }) {
     const [isHovered, setIsHovered] = useState(false);
+    const [bookmarked, setBookMarked] = useState(isLiked)
     const [email, setEmail] = useState(undefined);
     const userInfo = useSelector((state) => state.netflix.user);
     const navigate = useNavigate();
@@ -25,6 +26,7 @@ export default function Card({ movieData, isLiked=false }) {
     
     // Adding user Watchlist in db
     const addToList = async () => {
+        setBookMarked(true);
         try {
             await axios.post("http://localhost:5000/api/user/addWatchList", { email, data: movieData });
         } catch (error) {
@@ -51,7 +53,7 @@ export default function Card({ movieData, isLiked=false }) {
                             <RiThumbUpFill title="Like" />
                             <RiThumbDownFill title="Dislike" />
                             {
-                                isLiked ? 
+                                bookmarked ? 
                                     <BsBookmarkCheck color="red" title="Remove to my list" onClick={ ()=> dispatch(removeUseLikesMovies({ email, movieId: movieData.id, movie: movieData.name })) } /> :
                                     <AiOutlinePlus title="Add to my list" onClick={ ()=> addToList() } />
                             }

@@ -32,7 +32,7 @@ export default function Movies() {
          <Navbar isScrolled={isScrolled}></Navbar>
          <div className="data">
          <SelectGenre genres={genre} type="movie" />
-            {
+            {!movies.length ? <NotAvailable alert={"Data not available"} />  :
                 movies.length ? <Slider movies={movies} /> : <NotAvailable />
             }
          </div>
@@ -43,7 +43,7 @@ export default function Movies() {
 const Container = styled.div`
     .data {
         margin-top: 8rem;
-        .not-availble {
+        .not-available {
             text-align: center;
             color: white;
             margin-top: 4rem;

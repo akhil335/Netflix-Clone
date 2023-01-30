@@ -41,13 +41,11 @@ const getLikedMovies = async (req, res) => {
 const removeLikedMovies = async (req, res) => {
     try {
         const { email, movieId } = req.body;
-        console.log(email, movieId)
         const user = await User.findOne({ email });
 
          if(user) {
             const { likedMovies } = user;
             const movieIndex = likedMovies.findIndex(({ id }) => (id == movieId));
-            console.log(movieIndex)
             if(movieIndex < 0) res.status(400).send({ msg: "Movie not found"});
             likedMovies.splice(movieIndex, 1);
 

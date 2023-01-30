@@ -7,13 +7,14 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMovies, getGenres, userInfo } from "../store";
+import { fetchMovies, getGenres, userInfo, getUserLikedMovies } from "../store";
 import Slider from "../components/Slider";
 
 function Netflix() {
   const [isScrolled, setIsScrolled] = useState(false);
   const genresLoaded = useSelector((state) => state.netflix.genresLoaded);
   const movies = useSelector((state) => state.netflix.movies);
+  const email = useSelector((state) => state.netflix.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -25,6 +26,16 @@ function Netflix() {
   useEffect(()=> {
     if (genresLoaded) dispatch(fetchMovies({ type: "all"}));
   }, [dispatch, genresLoaded]);
+
+    // Get user email
+    useEffect(()=> {
+      dispatch(userInfo());
+  }, [dispatch])
+
+  // Calling userLikedMovies function from redux store
+  useEffect(() => {
+    if (email) dispatch(getUserLikedMovies(email));
+  }, [dispatch, email]);
   
   window.onscroll = () => {
     setIsScrolled(window.pageYOffset === 0 ? false : true);

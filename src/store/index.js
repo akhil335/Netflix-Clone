@@ -82,7 +82,6 @@ export const getUserLikedMovies = createAsyncThunk("netflix/LikedMovies", async 
 
 // deleting watchList movie from db
 export const removeUseLikesMovies = createAsyncThunk("netflix/removeLikedMovies", async ({ email, movieId, movie }) => {
-    console.log({email, movieId}, movie)
     const { data: { bookmarkedMovies }} = await axios.put(`http://localhost:5000/api/user/deleteWatchListMovie`, {
         email,
         movieId
@@ -113,8 +112,6 @@ const NeflixSlice = createSlice({
         })
         builder.addCase(getUserLikedMovies.fulfilled, (state, action) => {
             state.bookmarkedMovies = action.payload;
-            
-    // console.log(state.bookmarkedMovies, 'index.js')
         })
         builder.addCase(removeUseLikesMovies.fulfilled, (state, action) => {
             state.bookmarkedMovies = action.payload;

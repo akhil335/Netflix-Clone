@@ -22,7 +22,6 @@ function Login() {
   const handleSignIn = async () =>{
     try {
       const { email, password } = formValue;
-      console.log(email, password, formValue);
       await signInWithEmailAndPassword(firebaseAuth, email, password)
     } catch (error) {
       return error;
@@ -86,8 +85,8 @@ const Container = styled.div`
     display: grid;
     grid-template-rows: 15vh 85vh;
     .form-container {
-        gap: 2rem;
-        height: 85vh;
+      gap: 2rem;
+      height: 85vh;
       .form {
         padding: 5rem;
         border-radius: 3px;
@@ -123,8 +122,8 @@ const Container = styled.div`
             top: 50%;
             left: 20px;
             transform: translateY(-50%);
-            color: #a59b9b;;
-            transition: font .1s ease,top .1s ease,transform .1s ease;
+            color: #a59b9b;
+            transition: font 0.1s ease, top 0.1s ease, transform 0.1s ease;
           }
           .login_lablePlaceTransition {
             top: 4px;
@@ -148,6 +147,73 @@ const Container = styled.div`
           font-size: 1.1rem;
           span {
             color: #a59b9b;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 820px) {
+    .login_bg {
+      object-fit: cover;
+    }
+    .content {
+      grid-template-rows: 8vh 85vh;
+
+      .form-container {
+        align-items: flex-start;
+        padding-top: 2rem;
+
+        .form {
+          padding: 4rem;
+          .title {
+            margin-bottom: 1rem;
+
+            h3 {
+              font-weight: 500;
+            }
+          }
+
+          .container {
+            gap: 1.2rem;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .content {
+      background-color: rgba(0,0,0,1);
+      grid-template-rows: 0vh 85vh;
+
+      .header {
+        position: absolute;
+        padding: 0rem 1rem;
+
+        .logo {
+          padding-top: 1rem;
+          img {
+            height: 1.3rem;
+          }
+        }
+      }
+
+      .form-container {
+        height: 100vh;
+
+        .form {
+          min-width: 100%;
+          padding: 1.2rem;
+          height: 100vh;
+          justify-content: flex-start;
+          margin-top: 10rem;
+
+          .title {
+            margin-bottom: 1rem;
+            h3 {
+              font-size: 2rem;
+            }
           }
         }
       }

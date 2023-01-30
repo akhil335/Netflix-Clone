@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import { getUserLikedMovies, userInfo } from "../store";
 import Card from "../components/Card";
+import NotAvailable from "./NotAvailable";
 
 export default function WatchList() {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -16,10 +17,9 @@ export default function WatchList() {
         dispatch(userInfo());
     }, [dispatch])
 
-    // Calling userLikedMovied function from redux store
+    // Calling userLikedMovies function from redux store
     useEffect(()=> {
       if(email) dispatch(getUserLikedMovies(email));
-      console.log(bookmarkedMovies, 'watchlist component')
     }, [dispatch, email]);
     
     window.onscroll = () => {
@@ -33,7 +33,7 @@ export default function WatchList() {
             <div className="content flex column">
                 <h1>My List</h1>
                 <div className="grid flex">
-                    {
+                    {!bookmarkedMovies?.length ? <NotAvailable alert={"Not bookmarked anything.."} /> :
                         bookmarkedMovies?.map((movie, index) => {
                             return <Card movieData={ movie } index={ index } key={ movie.id} isLiked={true} />
                         })
@@ -58,7 +58,10 @@ const Container = styled.div`
             gap: 1rem;
             display: grid;
             grid-template-columns: repeat(auto-fit,minmax(15rem, 1rem));
-            
+
+            .not-available {
+                width: 28rem;
+            }
             div {
                 max-width: 100%;
                 width: 100%;
