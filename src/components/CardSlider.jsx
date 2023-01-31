@@ -24,7 +24,7 @@ export default function CardSlider({ type, data }) {
     };
 
     return (
-        <Container className="flex column" onMouseEnter={()=> setShowControls(true)} onMouseLeave={()=> setShowControls(false)}>
+        <Container className="flex column" onMouseEnter={()=> setShowControls(true)} onMouseLeave={()=> setShowControls(true)}>
             <h1>{type}</h1>
 
             <div className="wrapper">
@@ -47,39 +47,44 @@ export default function CardSlider({ type, data }) {
 }
 
 const Container = styled.div`
-    gap: 1rem;
+  gap: 1rem;
+  position: relative;
+  padding: 2rem 0;
+  h1 {
+    margin-left: 50px;
+  }
+  .wrapper {
     position: relative;
-    padding: 2rem 0;
-    h1 {
-        margin-left: 50px;
+    width: 100%;
+    overflow-x: clip;
+    .slider-action {
+      position: absolute;
+      display: flex;
+      justify-content: flex-end;
+      height: fit-content;
+      top: 30%;
+      width: 50px;
+      transition: 0.3s ease-in-out;
+      z-index: 5;
+      svg {
+        font-size: 2rem;
+      }
     }
-    .wrapper {
-        .slider {
-            width: max-content;
-            gap: 1rem;
-            transform: translateX(0px);
-            transition: 0.3s ease-in-out;
-            margin-left: 50px;
-        }
-        .slider-action {
-            position: absolute;
-            height: 100%;
-            top: 0;
-            bottom: 0;
-            width: 50px;
-            transition: 0.3s ease-in-out;
-            z-index: 10;
-            svg {
-                font-size: 2rem;
-            }
-        }
-        .none {
-            display: none;
-        }
-        .left {
-            left: 0;
-        }
-        .right {
-            right: 0;
-        }
-    }`;
+    .none {
+      display: none;
+    }
+    .left {
+      left: 0;
+    }
+    .right {
+      right: 0;
+    }
+    .slider {
+      width: max-content;
+      gap: 1rem;
+      transform: translateX(0px);
+      transition: 0.3s ease-in-out;
+      margin-left: 50px;
+    }
+  }
+`;

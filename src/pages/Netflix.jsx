@@ -112,6 +112,29 @@ const Container = styled.div`
         }
       }
     }
+  }
+  @media (max-width: 480px) {
+    .hero .container {
+      width: 100%;
+      .logo {
+        img {
+          width: 90%;
+          height: 100%;
+          margin-left: 0rem;
+          padding-left: 1rem;
+        }
+      }
+      .buttons {
+        margin: 1rem;
+        button {
+          gap: 0rem;
+          padding: 0.5rem 1.5rem;
+          svg {
+            margin-right: 1rem;
+          }
+        }
+      }
+    }
   }`;
 
 export default Netflix;

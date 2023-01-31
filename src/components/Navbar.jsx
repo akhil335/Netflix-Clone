@@ -7,6 +7,7 @@ import { firebaseAuth } from "../utils/firebase-config";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
+import { RxHamburgerMenu } from "react-icons/rx"
 
 function Navbar({isScrolled}) {
     const links = [
@@ -46,8 +47,11 @@ function Navbar({isScrolled}) {
                 </button>
                 <input type="text" placeholder="Search" onMouseEnter={(e)=> {setInputHover(true); e.target.value = ''}} onMouseLeave={()=> setInputHover(false)} onBlur={(e) => {setShowSearch(false); setInputHover(false);}} />
             </div>
-            <button onClick={()=> signOut(firebaseAuth)}>
+            <button className="sign-out" onClick={()=> signOut(firebaseAuth)}>
                 <FaPowerOff></FaPowerOff>
+            </button>
+            <button className="hamburgar">
+                <RxHamburgerMenu />
             </button>
         </div>
     </nav>
@@ -81,6 +85,7 @@ const Container = styled.div`
         }
         .right {
             gap: 1rem;
+            
             button {
                 background-color: transparent;
                 border: none;
@@ -128,9 +133,28 @@ const Container = styled.div`
                     opacity: 1;
                     visibility: visible;
                     padding: 0.3rem;
+                }
+            }
+            .hamburgar {
+                display: none;
+                svg {
+                    color: white;
+                    font-size: 2.5rem;
+                }
             }
         }
-    }`;
+    }
+    
+    @media (max-width: 480px) {
+        nav {
+            height: 4.5rem;
+            padding: 0px 1rem;
+            .left .brand img {
+                height: 2rem;
+            }
+        }
+    }
+`;
 
 
 export default Navbar;

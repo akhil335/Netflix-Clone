@@ -54,7 +54,7 @@ export default function Card({ movieData, isLiked=false }) {
                             <RiThumbDownFill title="Dislike" />
                             {
                                 bookmarked ? 
-                                    <BsBookmarkCheck color="red" title="Remove to my list" onClick={ ()=> dispatch(removeUseLikesMovies({ email, movieId: movieData.id, movie: movieData.name })) } /> :
+                                    <BsBookmarkCheck color="red" title="Remove to my list" onClick={ ()=> dispatch(removeUseLikesMovies({ email, movieId: movieData.id, movie: movieData.name }), setBookMarked(false)) } /> :
                                     <AiOutlinePlus title="Add to my list" onClick={ ()=> addToList() } />
                             }
                         </div>
@@ -88,6 +88,7 @@ const Container = styled.div`
         width: 100%;
         height: 100%;
         z-index: 10;
+        display: block;
     }
     .hover {
         z-index: 90;

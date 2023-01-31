@@ -8,7 +8,7 @@ const initialState = {
     genresLoaded: false,
     genres: [],
     user: null,
-    bookmarkedMovies: null
+    bookmarkedMovies: []
 }
 
 export const getGenres = createAsyncThunk("netflix/genres", async ()=> {
