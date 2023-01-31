@@ -76,13 +76,13 @@ export const userInfo = createAsyncThunk("netflix/userInfo", async () => {
 
 // Fetch watchList from db
 export const getUserLikedMovies = createAsyncThunk("netflix/LikedMovies", async (email) => {
-    const { data: { bookmarkedMovies }} = await axios.get(`http://localhost:5000/api/user/likedmovies/${email}`);
+    const { data: { bookmarkedMovies }} = await axios.get(`https://netflix-clone-api-znfj.onrender.com/api/user/likedmovies/${email}`);
     return bookmarkedMovies;
 }); 
 
 // deleting watchList movie from db
 export const removeUseLikesMovies = createAsyncThunk("netflix/removeLikedMovies", async ({ email, movieId, movie }) => {
-    const { data: { bookmarkedMovies }} = await axios.put(`http://localhost:5000/api/user/deleteWatchListMovie`, {
+    const { data: { bookmarkedMovies }} = await axios.put(`https://netflix-clone-api-znfj.onrender.com/api/user/deleteWatchListMovie`, {
         email,
         movieId
     });
