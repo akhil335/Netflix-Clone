@@ -11,9 +11,11 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { removeUseLikesMovies } from "../store";
 
-export default function Card({ movieData, isLiked=false }) {
+export default function Card({ movieData, isLiked = false}) {
+    console.log(isLiked)
     const [isHovered, setIsHovered] = useState(false);
-    const [bookmarked, setBookMarked] = useState(isLiked)
+    const [bookmarked, setBookMarked] = useState(isLiked);
+    
     const [email, setEmail] = useState(undefined);
     const userInfo = useSelector((state) => state.netflix.user);
     const navigate = useNavigate();
@@ -22,13 +24,14 @@ export default function Card({ movieData, isLiked=false }) {
     // User email saving in email state
     useEffect(() => {
         setEmail(userInfo);
-      }, [userInfo]);
+        setBookMarked(isLiked);
+      }, [userInfo, isLiked]);
     
     // Adding user Watchlist in db
     const addToList = async () => {
         setBookMarked(true);
         try {
-            await axios.post("http://localhost:5000/api/user/addWatchList", { email, data: movieData });
+            await axios.post("https://netflix-clone-api-znfj.onrender.com/api/user/addWatchList", { email, data: movieData });
         } catch (error) {
             return error;
         }
@@ -54,7 +57,7 @@ export default function Card({ movieData, isLiked=false }) {
                             <RiThumbDownFill title="Dislike" />
                             {
                                 bookmarked ? 
-                                    <BsBookmarkCheck color="red" title="Remove to my list" onClick={ ()=> dispatch(removeUseLikesMovies({ email, movieId: movieData.id, movie: movieData.name }), setBookMarked(false)) } /> :
+                                    <BsBookmarkCheck color="red" title="Remove to my list" onClick={ ()=> dispatch(removeUseLikesMovies({ email, movieId: movieData.id }), setBookMarked(false)) } /> :
                                     <AiOutlinePlus title="Add to my list" onClick={ ()=> addToList() } />
                             }
                         </div>

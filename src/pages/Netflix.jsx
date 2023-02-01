@@ -21,6 +21,7 @@ function Netflix() {
   useEffect(() => {
     dispatch(userInfo());
     dispatch(getGenres());
+    console.log()
   }, [dispatch]);
 
   useEffect(()=> {
@@ -128,7 +129,7 @@ const Container = styled.div`
         margin: 1rem;
         button {
           gap: 0rem;
-          padding: 0.5rem 1.5rem;
+          padding: 3% 5%;
           svg {
             margin-right: 1rem;
           }

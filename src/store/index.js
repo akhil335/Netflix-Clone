@@ -81,7 +81,7 @@ export const getUserLikedMovies = createAsyncThunk("netflix/LikedMovies", async 
 }); 
 
 // deleting watchList movie from db
-export const removeUseLikesMovies = createAsyncThunk("netflix/removeLikedMovies", async ({ email, movieId, movie }) => {
+export const removeUseLikesMovies = createAsyncThunk("netflix/removeLikedMovies", async ({ email, movieId }) => {
     const { data: { bookmarkedMovies }} = await axios.put(`https://netflix-clone-api-znfj.onrender.com/api/user/deleteWatchListMovie`, {
         email,
         movieId
