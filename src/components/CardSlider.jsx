@@ -34,7 +34,7 @@ export default function CardSlider({ type, data }) {
                 <div className="flex slider" ref={listRef}>
                 {!data.length ? <NotAvailable alert={"Data not available"} />  :
                 data.map((movie, index) => {
-                    return <Card movieData={movie} index={index} key={movie.id} isLiked={bookmarkedMovies.some(({id}) => id === movie.id)} />
+                    return <Card movieData={movie} index={index} key={movie.id} isLiked={bookmarkedMovies?.some(({id}) => id === movie.id)} />
                 })
                 }
                 </div>
