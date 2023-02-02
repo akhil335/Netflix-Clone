@@ -43,7 +43,7 @@ function Navbar({isScrolled}) {
             </ul>
         </div>
         <div className="right flex a-center">
-            <div className={`menu-overlay ${menuOpen ? "menu-overlay_open" : ""}`}>
+            <div className={`menu-overlay ${menuOpen ? "menu-overlay_open" : "menu-overlay_close"}`}>
                 { menuOpen && <div className="close-menu">
                     <button onClick={()=> setMenuOpen(false)}>
                         <AiOutlineCloseSquare />
@@ -188,41 +188,16 @@ const Container = styled.div`
       }
       .right {
         .menu-overlay {
-          opacity: 0;
           position: absolute;
-          display: block;
-        //   transform: translateX(100%);
+          opacity: 0;
+          visibility: hidden;
+          // display: none;
           width: 0;
           height: 100vh;
           background: #000000e0;
-          // top: 0;
-          // right: 0;
-          transition: 0.3s all ease-in-out;
-          // .close-menu {
-          //     display: flex;
-          //     align-items: end;
-          //     justify-content: end;
-          //     button {
-          //         display: block;
-          //         padding: 0.5rem 0.5rem 0 0;
-          //         svg {
-          //             display: block;
-          //             width: 50px;
-          //             height: 50px;
-          //         }
-          //     }
-          // }
-        }
-        .menu-overlay_open {
-          position: absolute;
-        //   transform: translateX(0);
-          display: block;
-          width: 80%;
-          height: 100vh;
-          background: #000000e0;
-          opacity: 1;
           top: 0;
           right: 0;
+
           .close-menu {
             display: flex;
             align-items: end;
@@ -240,6 +215,48 @@ const Container = styled.div`
           .search,
           .sign-out {
             display: none;
+          }
+        }
+        .menu-overlay_close { 
+          displa: block;
+          animation: menu_close 0.3s ease-in-out forwards;
+          @keyframes menu_close {
+            from {
+              width: 80%;
+              opacity: 1;
+              visibility: visible;
+            }
+            to {
+              width: 0%;
+              opacity: 0;
+              visibility: hidden;
+              // display: none;
+            }
+          }
+        }
+        .menu-overlay_open {
+          display: block;
+          animation: menu_open 0.3s ease-in-out forwards;
+          @keyframes menu_open {
+            from {
+              width: 0%;
+              opacity: 0;
+              visibility: hidden;
+            }
+            to {
+              opacity: 1;
+              width: 80%;
+              visibility: visible;
+            }
+          }
+          .search,
+          .sign-out {
+            display: block;
+          }
+          .search {
+            display: flex;
+            height: 3rem;
+            margin: 1rem;
           }
         }
         .hamburgar {

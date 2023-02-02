@@ -88,4 +88,14 @@ const Container = styled.div`
       margin-left: 50px;
     }
   }
+  @media (max-width: 480px) {
+    h1 {
+      margin-left: 20px;
+    }
+    .wrapper {
+      .slider {
+        margin-left: 20px;
+      }
+    }
+  }
 `;
