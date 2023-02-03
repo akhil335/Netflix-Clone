@@ -20,6 +20,7 @@ function Navbar({isScrolled}) {
     const [showSearch, setShowSearch] = useState(false);
     const [inputHover, setInputHover] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
+    const [menuTransitionClass, setMenuTransitionClass] = useState();
     const navigate = useNavigate();
 
     onAuthStateChanged(firebaseAuth, (currentUser) => {
@@ -43,23 +44,23 @@ function Navbar({isScrolled}) {
             </ul>
         </div>
         <div className="right flex a-center">
-            <div className={`menu-overlay ${menuOpen ? "menu-overlay_open" : "menu-overlay_close"}`}>
+            <div className={`menu-overlay ${menuTransitionClass}`}>
                 { menuOpen && <div className="close-menu">
-                    <button onClick={()=> setMenuOpen(false)}>
+                    <button onClick={()=> {setMenuOpen(false); setMenuTransitionClass("menu-overlay_close")}}>
                         <AiOutlineCloseSquare />
                     </button>
                 </div>}
                 <div className={`search ${showSearch ? 'show-search' : ''}`}>
-                    <button onFocus={(e) => setShowSearch(true)} onBlur={() => { if(!inputHover) setShowSearch(false) }}>
+                    <button onFocus={() => setShowSearch(true)} onBlur={() => { if(!inputHover) setShowSearch(false) }}>
                         <FaSearch />
                     </button>
-                    <input type="text" placeholder="Search" onMouseEnter={(e)=> {setInputHover(true); e.target.value = ''}} onMouseLeave={()=> setInputHover(false)} onBlur={(e) => {setShowSearch(false); setInputHover(false);}} />
+                    <input type="text" placeholder="Search" onMouseEnter={(e)=> {setInputHover(true); e.target.value = ''}}onBlur={() => {setShowSearch(false); setInputHover(false)}} onMouseDown={()=>setInputHover(true)}/>
                 </div>
                 <button className="sign-out" onClick={()=> signOut(firebaseAuth)}>
-                    <FaPowerOff></FaPowerOff>
+                   { menuOpen && "Log Out" }<FaPowerOff></FaPowerOff>
                 </button>
             </div>
-           { !menuOpen && <button className="hamburgar" onClick={()=> setMenuOpen(true)}>
+           { !menuOpen && <button className="hamburgar" onClick={()=> {setMenuOpen(true); setMenuTransitionClass("menu-overlay_open")}}>
                 <RxHamburgerMenu />
             </button>}
         </div>
@@ -164,7 +165,7 @@ const Container = styled.div`
     }
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 540px) {
     nav {
       height: 4.5rem;
       padding: 0px 1rem;
@@ -189,14 +190,13 @@ const Container = styled.div`
       .right {
         .menu-overlay {
           position: absolute;
-          opacity: 0;
           visibility: hidden;
-          // display: none;
           width: 0;
           height: 100vh;
-          background: #000000e0;
+          background: #000000eb;
           top: 0;
           right: 0;
+          z-index: 100;
 
           .close-menu {
             display: flex;
@@ -216,9 +216,18 @@ const Container = styled.div`
           .sign-out {
             display: none;
           }
+          .search {
+            border: 1px solid white;
+            background-color: rgba(0, 0, 0, 0.6);
+            input {
+              width: 100%;
+              opacity: 1;
+              visibility: visible;
+              padding: 0.3rem;
+            }
+          }
         }
-        .menu-overlay_close { 
-          displa: block;
+        .menu-overlay_close {
           animation: menu_close 0.3s ease-in-out forwards;
           @keyframes menu_close {
             from {
@@ -230,7 +239,6 @@ const Container = styled.div`
               width: 0%;
               opacity: 0;
               visibility: hidden;
-              // display: none;
             }
           }
         }
@@ -241,6 +249,7 @@ const Container = styled.div`
             from {
               width: 0%;
               opacity: 0;
+              display: block;
               visibility: hidden;
             }
             to {
@@ -257,6 +266,21 @@ const Container = styled.div`
             display: flex;
             height: 3rem;
             margin: 1rem;
+          }
+          .sign-out {
+            position: absolute;
+            top: 0.8rem;
+            left: 1rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.3rem;
+
+             svg {
+              font-size: 1.7rem;         
+              margin-left: 1rem;
+            }
           }
         }
         .hamburgar {

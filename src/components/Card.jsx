@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeUseLikesMovies } from "../store";
 
 export default function Card({ movieData, isLiked = false}) {
-    console.log(isLiked)
     const [isHovered, setIsHovered] = useState(false);
     const [bookmarked, setBookMarked] = useState(isLiked);
     
@@ -90,7 +89,7 @@ const Container = styled.div`
         border-radius: 0.2rem;
         width: 100%;
         height: 100%;
-        z-index: 10;
+        z-index: 1;
         display: block;
     }
     .hover {
@@ -157,6 +156,26 @@ const Container = styled.div`
             }
         }
     }
-    @media (max-width: 480px) {
+    @media (max-width: 540px) {
         width: 7.4%;
+        .hover {
+            .info-container {
+                h3 {
+                    font-size: 0.7rem;
+                    font-weight: 500;
+                }
+                .icon svg {
+                    font-size: 1rem;
+                }
+                .genres {
+                    ul {
+                        gap: 0.5rem;
+                        li {
+                            list-style: none;
+                            font-size: 0.5rem;
+                        }
+                    }
+                }
+            }
+        }
     }`;

@@ -66,7 +66,7 @@ const Container = styled.div`
       top: 30%;
       width: 50px;
       transition: 0.3s ease-in-out;
-      z-index: 5;
+      z-index: 1;
       svg {
         font-size: 2rem;
       }
@@ -96,6 +96,12 @@ const Container = styled.div`
       .slider {
         margin-left: 20px;
       }
+    }
+  }
+
+  @media (max-width: 540px) {
+    h1 {
+      font-size: 1.2rem;
     }
   }
 `;
