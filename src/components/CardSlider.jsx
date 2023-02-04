@@ -88,8 +88,10 @@ const Container = styled.div`
       margin-left: 50px;
     }
   }
-  @media (max-width: 480px) {
+
+  @media (max-width: 540px) {
     h1 {
+      font-size: 1.2rem;
       margin-left: 20px;
     }
     .wrapper {
@@ -99,9 +101,15 @@ const Container = styled.div`
     }
   }
 
-  @media (max-width: 540px) {
+  @media (max-width: 912px) {
     h1 {
       font-size: 1.2rem;
+      margin-left: 20px;
+    }
+    .wrapper {
+      .slider {
+        margin-left: 20px;
+      }
     }
   }
 `;

@@ -22,4 +22,13 @@ const Select = styled.select`
     border-radius: 5px;
     padding: 0.5rem 1rem;
     color: white;
-    text-align-last: center;`;
+    text-align-last: center;
+    
+    @media (max-width: 540px) {
+        margin-left: 1rem;
+        font-size: 0.8rem;
+    }
+    @media (max-width: 912px) {
+        margin-left: 1rem;
+      }
+    `;
