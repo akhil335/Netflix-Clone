@@ -57,7 +57,7 @@ const Container = styled.div`
         .grid {
             gap: 1rem;
             display: grid;
-            grid-template-columns: repeat(auto-fit,minmax(15rem, 1rem));
+            grid-template-columns: repeat(5, 1fr);
 
             .not-available {
                 width: 28rem;
@@ -65,6 +65,42 @@ const Container = styled.div`
             div {
                 max-width: 100%;
                 width: 100%;
+            }
+        }
+    }
+    @media (max-width: 540px) {
+        .content {
+            margin: 0;
+            padding: 1rem;
+            margin-top: 6rem;
+            gap: 1rem;
+    
+            h1 {
+                margin-left: 0rem;
+                font-size: 1.7rem;
+                font-weight: 400;
+            }
+    
+            .grid {
+                grid-template-columns: repeat(2,1fr);
+            }
+        }
+    }
+    @media (max-width: 912px) {
+        .content {
+            margin: 0;
+            padding: 2rem;
+            margin-top: 6rem;
+            gap: 1rem;
+    
+            h1 {
+                margin-left: 0rem;
+                font-size: 2.7rem;
+                font-weight: 400;
+            }
+    
+            .grid {
+                grid-template-columns: repeat(3,1fr);
             }
         }
     }`;

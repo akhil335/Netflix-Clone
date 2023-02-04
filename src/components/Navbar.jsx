@@ -20,7 +20,7 @@ function Navbar({isScrolled}) {
     const [showSearch, setShowSearch] = useState(false);
     const [inputHover, setInputHover] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
-    const [menuTransitionClass, setMenuTransitionClass] = useState();
+    const [menuTransitionClass, setMenuTransitionClass] = useState('');
     const navigate = useNavigate();
 
     onAuthStateChanged(firebaseAuth, (currentUser) => {
@@ -46,19 +46,32 @@ function Navbar({isScrolled}) {
         <div className="right flex a-center">
             <div className={`menu-overlay ${menuTransitionClass}`}>
                 { menuOpen && <div className="close-menu">
-                    <button onClick={()=> {setMenuOpen(false); setMenuTransitionClass("menu-overlay_close")}}>
+                    <button onClick={()=> {setMenuOpen(false); setMenuTransitionClass("menu-overlay_close"); setTimeout(() => {
+                      setMenuTransitionClass(""); 
+                    }, 300);}}>
                         <AiOutlineCloseSquare />
                     </button>
                 </div>}
                 <div className={`search ${showSearch ? 'show-search' : ''}`}>
-                    <button onFocus={() => setShowSearch(true)} onBlur={() => { if(!inputHover) setShowSearch(false) }}>
+                    <button onFocus={() => setShowSearch(true)} onBlur={() => { if(!inputHover) setShowSearch(false)}}>
                         <FaSearch />
                     </button>
-                    <input type="text" placeholder="Search" onMouseEnter={(e)=> {setInputHover(true); e.target.value = ''}}onBlur={() => {setShowSearch(false); setInputHover(false)}} onMouseDown={()=>setInputHover(true)}/>
+                    <input type="text" placeholder="Search" onFocus={(e)=> {setInputHover(true); e.target.value = ''}} onBlur={() => {setShowSearch(false); setInputHover(false)}} onMouseDown={()=>setInputHover(true)}/>
                 </div>
                 <button className="sign-out" onClick={()=> signOut(firebaseAuth)}>
                    { menuOpen && "Log Out" }<FaPowerOff></FaPowerOff>
                 </button>
+              { menuOpen && <div className="mobile-menus">
+                   <ul className="links flex">
+                {
+                    links.map(({name, link}) => {
+                        return (
+                            <li key={name}><Link to={link}>{name}</Link></li>
+                        )
+                    })
+                }
+                </ul>
+              </div>}
             </div>
            { !menuOpen && <button className="hamburgar" onClick={()=> {setMenuOpen(true); setMenuTransitionClass("menu-overlay_open")}}>
                 <RxHamburgerMenu />
@@ -81,7 +94,6 @@ const Container = styled.div`
     align-item: center;
     z-index: 2;
     padding: 0 4rem;
-    transition: 0.3s ease-in-out;
     .left {
       gap: 2rem;
       .brand {
@@ -280,6 +292,17 @@ const Container = styled.div`
              svg {
               font-size: 1.7rem;         
               margin-left: 1rem;
+            }
+          }
+          .mobile-menus {
+            padding: 1rem;
+            .links {
+              display: block;
+              text-align: start;
+              li {
+                padding: 1rem;
+                font-size: 1.2rem;    
+              }
             }
           }
         }

@@ -96,8 +96,8 @@ const Container = styled.div`
         z-index: 90;
         height: 100%;
         width: 100%;
-        position: absolute;
-        bottom: 13vh;
+        position: absolute;    
+        bottom: 10vh;
         left: 0;
         border-radius: 0.3rem;
         box-shadow: rgb(0 0 0 / 75%) 0px 3px 10px;
@@ -109,7 +109,6 @@ const Container = styled.div`
                 width: 100%;
                 height: 140px;
                 object-fit: cover;
-                border-radius: 0.3rem;
                 top: 0;
                 z-index: 4;
                 position: absolute;
@@ -164,8 +163,13 @@ const Container = styled.div`
                     font-size: 0.7rem;
                     font-weight: 500;
                 }
-                .icon svg {
-                    font-size: 1rem;
+                .icon {
+                    .controls {
+                        gap: 0.5rem;
+                    }
+                    svg {
+                        font-size: 1rem;
+                    }
                 }
                 .genres {
                     ul {
