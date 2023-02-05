@@ -47,10 +47,10 @@ function Netflix() {
    <Container>
     <Navbar isScrolled={isScrolled}></Navbar>
     <div className="hero">
-      <img src={backgroundImage} alt="background" className="background-image" />
+      <img src={backgroundImage} alt="background" className="background-image" loading="lazy" />
       <div className="container">
         <div className="logo">
-          <img src={movieLogo} alt="Movie Logo" />
+          <img src={movieLogo} alt="Movie Logo" loading="lazy" />
         </div>
         <div className="buttons flex">
           <button className="flex j-center a-center">

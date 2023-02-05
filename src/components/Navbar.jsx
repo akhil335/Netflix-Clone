@@ -31,7 +31,7 @@ function Navbar({isScrolled}) {
     <nav className={`flex ${isScrolled ? 'scrolled' : ""}`}>
         <div className="left flex a-center">
             <div className="brand flex a-center j-center">
-                <img src={logo} alt="logo"/>
+                <img src={logo} alt="logo" loading="lazy" />
             </div>
             <ul className="links flex">
                 {

@@ -4,7 +4,7 @@ import styled from "styled-components";
 function BackgroundImage(props) {
   return (
    <Container>
-    <img className="login_bg" src={props.backgroundImage} alt="netflix background" />
+    <img className="login_bg" src={props.backgroundImage} alt="netflix background" loading="lazy" />
    </Container>
   );
 }

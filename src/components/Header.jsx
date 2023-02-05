@@ -8,7 +8,7 @@ function Header(props) {
   return (
    <Container login = {props.login} className="header flex a-center j-between">
     <div className="logo">
-      <img src={logo} alt="logo" />
+      <img src={logo} alt="logo" loading="lazy" />
     </div>
     {props.login && 
      <button onClick={() => navigate(props.login ? "/login" : "/signup")}>

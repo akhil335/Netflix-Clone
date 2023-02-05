@@ -37,12 +37,12 @@ export default function Card({ movieData, isLiked = false}) {
     }
 
     return <Container onMouseEnter={()=>setIsHovered(true)} onMouseLeave={()=>setIsHovered(false)}>
-        <img src={`https://image.tmdb.org/t/p/w500${movieData.image}`} alt={movieData.name} />
+        <img src={`https://image.tmdb.org/t/p/w500${movieData.image}`} alt={movieData.name} loading="lazy" />
 
         { isHovered && (
             <div className="hover">
                 <div className="image-video-container">
-                    <img src={`https://image.tmdb.org/t/p/w500${movieData.image}`} alt={movieData.name} onClick={ ()=> navigate("/player") } />
+                    <img src={`https://image.tmdb.org/t/p/w500${movieData.image}`} alt={movieData.name} onClick={ ()=> navigate("/player") } loading="lazy" />
                     <video src={ video } autoPlay muted loop onClick={ ()=> navigate("/player") } />
                 </div>
                 <div className="info-container flex-column">
