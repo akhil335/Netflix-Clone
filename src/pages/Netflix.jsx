@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMovies, getGenres, userInfo, getUserLikedMovies } from "../store";
 import Slider from "../components/Slider";
+import { PageTitle } from "../components/Helmet";
 
 function Netflix() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -45,6 +46,7 @@ function Netflix() {
 
   return (
    <Container>
+    <PageTitle title={"Netflix Clone | Home"} />
     <Navbar isScrolled={isScrolled}></Navbar>
     <div className="hero">
       <img src={backgroundImage} alt="background" className="background-image" loading="lazy" />
@@ -99,7 +101,7 @@ const Container = styled.div`
           padding-left: 2rem;
           padding-right: 2.4rem;
           border: none;
-          transition: 0.3s ease-in-out;
+          transition: 0.3s ease-in-out opacity;
           &:hover {
             opacity: 0.8;
           }

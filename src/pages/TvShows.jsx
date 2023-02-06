@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar";
 import Slider from "../components/Slider";
 import NotAvailable from "./NotAvailable";
 import SelectGenre from "./SelectGenre";
+import { PageTitle } from "../components/Helmet";
 
 export default function TvShows() {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -29,6 +30,7 @@ export default function TvShows() {
 
     return (
         <Container>
+          <PageTitle title={"Netflix Clone | TvShows"} />
          <Navbar isScrolled={isScrolled}></Navbar>
          <div className="data">
          <SelectGenre genres={genre} type="tv" />

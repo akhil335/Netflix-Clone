@@ -67,7 +67,7 @@ export default function Card({ movieData, isLiked = false}) {
                     <div className="genres flex">
                         <ul className="flex">
                             {
-                                movieData.genres.map((genre) =>
+                                movieData?.genres.map((genre) =>
                                     <li key={genre}>{genre}</li>
                                 )
                             }
@@ -101,7 +101,7 @@ const Container = styled.div`
         left: 0;
         border-radius: 0.3rem;
         box-shadow: rgb(0 0 0 / 75%) 0px 3px 10px;
-        transition: 0.3s ease-in-out;
+        transition: 0.3s transform ease-in-out;
         .image-video-container {
             position: relative;
             height: 140px; 
@@ -135,7 +135,7 @@ const Container = styled.div`
                 svg {
                     font-size: 2rem;
                     cursor: pointer;
-                    transition: 0.3s ease-in-out;
+                    transition: 0.3s transform ease-in-out;
                     &:hover {
                         color: #b8b8b8
                     }

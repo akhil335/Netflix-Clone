@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { RxHamburgerMenu } from "react-icons/rx"
 import {AiOutlineCloseSquare} from "react-icons/ai"
+import { useDispatch } from "react-redux";
 
 function Navbar({isScrolled}) {
     const links = [
@@ -21,11 +22,18 @@ function Navbar({isScrolled}) {
     const [inputHover, setInputHover] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const [menuTransitionClass, setMenuTransitionClass] = useState('');
+    const [searchInput, setSearchInput] = useState('');
     const navigate = useNavigate();
 
+    // Checking if user is autherize if not naviagting to login page
     onAuthStateChanged(firebaseAuth, (currentUser) => {
         if (!currentUser) navigate("/login");
     });
+
+    // Dispatching search input to redux store and getting results
+    // const searchMovies = async() => {
+    //   useDispatch
+    // }
 
   return <Container>
     <nav className={`flex ${isScrolled ? 'scrolled' : ""}`}>
@@ -52,12 +60,15 @@ function Navbar({isScrolled}) {
                         <AiOutlineCloseSquare />
                     </button>
                 </div>}
-                <div className={`search ${showSearch ? 'show-search' : ''}`}>
-                    <button onFocus={() => setShowSearch(true)} onBlur={() => { if(!inputHover) setShowSearch(false)}}>
-                        <FaSearch />
+                <form>
+                    <div className={`search ${showSearch ? 'show-search' : ''}`}>
+                    <button onFocus={() => setShowSearch(true)} onBlur={() => { if(!inputHover) setShowSearch(false);  setSearchInput('')}}>
+                        <FaSearch onClick={()=> searchMovies()}/>
                     </button>
-                    <input type="text" placeholder="Search" onFocus={(e)=> {setInputHover(true); e.target.value = ''}} onBlur={() => {setShowSearch(false); setInputHover(false)}} onMouseDown={()=>setInputHover(true)}/>
+                    <input type="text" placeholder="Search" onFocus={()=> {setInputHover(true)}} onBlur={() => {setShowSearch(false); setInputHover(false); setSearchInput('')}} onMouseDown={()=>setInputHover(true)}
+                    value={searchInput} onChange={(e) => setSearchInput(e.target.value)} />
                 </div>
+                </form>
                 <button className="sign-out" onClick={()=> signOut(firebaseAuth)}>
                    { menuOpen && "Log Out" }<FaPowerOff></FaPowerOff>
                 </button>
@@ -139,7 +150,7 @@ const Container = styled.div`
             width: 0;
             opacity: 0;
             visibility: hidden;
-            transition: 0.5s ease-in-out all;
+            transition: 0.5s width ease-in-out;
             background-color: transparent;
             border: none;
             color: white;

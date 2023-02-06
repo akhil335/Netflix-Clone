@@ -6,6 +6,7 @@ import { firebaseAuth } from "../utils/firebase-config";
 import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import signBg from "../assets/netflix-background.jpg"
+import { PageTitle } from "../components/Helmet";
 
 function Signup() {
   const navigate = useNavigate()
@@ -30,6 +31,7 @@ function Signup() {
   })
   return (
     <Container showPassword={showPassword}>
+      <PageTitle title={"Netflix Clone | Signup"} />
       <BackgroundImage backgroundImage={signBg} />
       <div className="content">
         <Header login />

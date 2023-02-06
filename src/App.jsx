@@ -7,20 +7,23 @@ import Player from "./pages/Player";
 import Movies from "./pages/Movies";
 import TvShows from "./pages/TvShows";
 import WatchList from "./pages/WatchList";
+import { HelmetProvider } from "react-helmet-async";
 
 function App() {
   return (
-    <BrowserRouter>
-    <Routes>
-      <Route exact path="/login" element={<Login />} />
-      <Route exact path="/signup" element={<Signup />} />
-      <Route exact path="/player" element={<Player />} />
-      <Route exact path="/movies" element={<Movies />} />
-      <Route exact path="/tv" element={<TvShows />} />
-      <Route exact path="/myList" element={<WatchList />} />
-      <Route exact path="/" element={<Netflix />} />
-    </Routes>
-    </BrowserRouter>
+    <HelmetProvider>
+      <BrowserRouter>
+      <Routes>
+        <Route exact path="/login" element={<Login />} />
+        <Route exact path="/signup" element={<Signup />} />
+        <Route exact path="/player" element={<Player />} />
+        <Route exact path="/movies" element={<Movies />} />
+        <Route exact path="/tv" element={<TvShows />} />
+        <Route exact path="/myList" element={<WatchList />} />
+        <Route exact path="/" element={<Netflix />} />
+      </Routes>
+      </BrowserRouter>
+    </HelmetProvider>
   );
 }
 

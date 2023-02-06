@@ -35,7 +35,7 @@ export default function CardSlider({ type, data }) {
                 <div className="flex slider" ref={listRef}>
                 {!data.length ? <NotAvailable alert={"Data not available"} />  :
                 data.map((movie, index) => {
-                    return <Card movieData={movie} index={index} key={movie.id} isLiked={bookmarkedMovies.some(({id}) => id === movie.id)} />
+                    return <Card movieData={movie} index={index} key={movie.id} isLiked={bookmarkedMovies?.some(({id}) => id === movie.id)} />
                 })
                 }
                 </div>
@@ -65,7 +65,7 @@ const Container = styled.div`
       height: fit-content;
       top: 30%;
       width: 50px;
-      transition: 0.3s ease-in-out;
+      transition: 0.3s transform ease-in-out;
       z-index: 1;
       svg {
         font-size: 2rem;
@@ -84,7 +84,7 @@ const Container = styled.div`
       width: max-content;
       gap: 1rem;
       transform: translateX(0px);
-      transition: 0.3s ease-in-out;
+      transition: 0.3s transform ease-in-out;
       margin-left: 50px;
     }
   }

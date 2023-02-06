@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import { getUserLikedMovies, userInfo } from "../store";
 import Card from "../components/Card";
 import NotAvailable from "./NotAvailable";
+import { PageTitle } from "../components/Helmet";
 
 export default function WatchList() {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -29,6 +30,7 @@ export default function WatchList() {
 
     return (
         <Container>
+            <PageTitle title={"Netflix Clone | MyList"} />
             <Navbar isScrolled={isScrolled} />
             <div className="content flex column">
                 <h1>My List</h1>
