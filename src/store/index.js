@@ -93,7 +93,7 @@ export const removeUseLikesMovies = createAsyncThunk("netflix/removeLikedMovies"
 // Fetching data for Search Keywords
 export const fetchSearchData = createAsyncThunk("netflix/fetchSearchData", async ( searchInput, thunkApi ) => {
     const { netflix: { genres }} = thunkApi.getState();
-    const { netflix: { searchedData }} = thunkApi.getState();
+    let { netflix: { searchedData }} = thunkApi.getState();
     searchedData = [];
     const results =  getRawData(`${TMBD_BASE_URL}/search/multi?api_key=${API_KEY}&language=en-US&query=${searchInput}&page=1&include_adult=false`, genres, true);
     return results;
