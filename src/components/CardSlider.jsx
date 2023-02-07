@@ -9,7 +9,6 @@ export default function CardSlider({ type, data }) {
     const [showControls, setShowControls] = useState(false);
     const [sliderPosition, setSliderPosition] = useState(0);
     const bookmarkedMovies = useSelector((state) => state.netflix.bookmarkedMovies);
-    console.log(bookmarkedMovies)
     const listRef = useRef();
 
     const handleDirection = (direction) => {

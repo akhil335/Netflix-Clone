@@ -10,6 +10,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { RxHamburgerMenu } from "react-icons/rx"
 import {AiOutlineCloseSquare} from "react-icons/ai"
 import { useDispatch } from "react-redux";
+import { fetchSearchData } from "../store";
 
 function Navbar({isScrolled}) {
     const links = [
@@ -24,6 +25,7 @@ function Navbar({isScrolled}) {
     const [menuTransitionClass, setMenuTransitionClass] = useState('');
     const [searchInput, setSearchInput] = useState('');
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     // Checking if user is autherize if not naviagting to login page
     onAuthStateChanged(firebaseAuth, (currentUser) => {
@@ -31,9 +33,11 @@ function Navbar({isScrolled}) {
     });
 
     // Dispatching search input to redux store and getting results
-    // const searchMovies = async() => {
-    //   useDispatch
-    // }
+    const searchMovies = async(searchInput) => {
+      dispatch(fetchSearchData(searchInput))
+      setSearchInput('');
+      navigate("/search");
+    }
 
   return <Container>
     <nav className={`flex ${isScrolled ? 'scrolled' : ""}`}>
@@ -60,12 +64,16 @@ function Navbar({isScrolled}) {
                         <AiOutlineCloseSquare />
                     </button>
                 </div>}
-                <form>
+                <form onSubmit={e => {e.preventDefault(); searchMovies(searchInput)}}>
                     <div className={`search ${showSearch ? 'show-search' : ''}`}>
-                    <button onFocus={() => setShowSearch(true)} onBlur={() => { if(!inputHover) setShowSearch(false);  setSearchInput('')}}>
-                        <FaSearch onClick={()=> searchMovies()}/>
+                    <button type="button" onFocus={() => setShowSearch(true)} onBlur={() => { if(!inputHover) setShowSearch(false)}}>
+                        <FaSearch onClick={(e)=> {searchMovies(searchInput)}}/>
                     </button>
-                    <input type="text" placeholder="Search" onFocus={()=> {setInputHover(true)}} onBlur={() => {setShowSearch(false); setInputHover(false); setSearchInput('')}} onMouseDown={()=>setInputHover(true)}
+                    <input type="text" placeholder="Search" onFocus={()=> {setInputHover(true)}} onBlur={() =>
+                    {
+                      setShowSearch(false); 
+                      setInputHover(false); 
+                    }} onMouseDown={()=>setInputHover(true)}
                     value={searchInput} onChange={(e) => setSearchInput(e.target.value)} />
                 </div>
                 </form>

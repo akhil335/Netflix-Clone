@@ -8,7 +8,8 @@ const initialState = {
     genresLoaded: false,
     genres: [],
     user: null,
-    bookmarkedMovies: []
+    bookmarkedMovies: [],
+    searchedData: []
 }
 
 export const getGenres = createAsyncThunk("netflix/genres", async ()=> {
@@ -17,10 +18,10 @@ export const getGenres = createAsyncThunk("netflix/genres", async ()=> {
 })
 
 const createArrayFromRawData = (array, moviesArray, genres) => {
-  array.forEach((movie) => {
+  array?.forEach((movie) => {
     const movieGenres = [];
-    movie.genre_ids.forEach((genre) => {
-      const name = genres.find(({ id }) => id === genre);
+    movie.genre_ids?.forEach((genre) => {
+      const name = genres?.find(({ id }) => id === genre);
       if (name) movieGenres.push(name.name);
     });
     if (movie.backdrop_path) {
@@ -80,7 +81,7 @@ export const getUserLikedMovies = createAsyncThunk("netflix/LikedMovies", async 
     return bookmarkedMovies;
 }); 
 
-// deleting watchList movie from db
+// Deleting watchList movie from db
 export const removeUseLikesMovies = createAsyncThunk("netflix/removeLikedMovies", async ({ email, movieId }) => {
     const { data: { bookmarkedMovies }} = await axios.put(`https://netflix-clone-api-znfj.onrender.com/api/user/deleteWatchListMovie`, {
         email,
@@ -89,6 +90,14 @@ export const removeUseLikesMovies = createAsyncThunk("netflix/removeLikedMovies"
     return bookmarkedMovies;
 }); 
 
+// Fetching data for Search Keywords
+export const fetchSearchData = createAsyncThunk("netflix/fetchSearchData", async ( searchInput, thunkApi ) => {
+    const { netflix: { genres }} = thunkApi.getState();
+    const { netflix: { searchedData }} = thunkApi.getState();
+    searchedData = [];
+    const results =  getRawData(`${TMBD_BASE_URL}/search/multi?api_key=${API_KEY}&language=en-US&query=${searchInput}&page=1&include_adult=false`, genres, true);
+    return results;
+}); 
 
 const NeflixSlice = createSlice({
     name: "Netflix",
@@ -115,6 +124,10 @@ const NeflixSlice = createSlice({
         })
         builder.addCase(removeUseLikesMovies.fulfilled, (state, action) => {
             state.bookmarkedMovies = action.payload;
+        })
+        builder.addCase(fetchSearchData.fulfilled, (state, action) => {
+            state.searchedData = action.payload;
+            console.log(state.searchedData)
         })
     }
 })

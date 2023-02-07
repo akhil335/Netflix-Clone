@@ -116,7 +116,7 @@ const Container = styled.div`
       }
     }
   }
-  @media (max-width: 480px) {
+  @media (max-width: 540px) {
     .hero .container {
       width: 100%;
       .logo {
