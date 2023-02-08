@@ -47,6 +47,7 @@ export default function CardSlider({ type, data }) {
 }
 
 const Container = styled.div`
+user-select: none;
   gap: 1rem;
   position: relative;
   padding: 2rem 0;
@@ -80,7 +81,7 @@ const Container = styled.div`
       right: 0;
     }
     .slider {
-      width: max-content;
+      width: calc(100% / 0.17);
       gap: 1rem;
       transform: translateX(0px);
       transition: 0.3s transform ease-in-out;
