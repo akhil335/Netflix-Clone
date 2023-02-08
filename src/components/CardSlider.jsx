@@ -8,20 +8,47 @@ import { useSelector } from "react-redux";
 export default function CardSlider({ type, data }) {
     const [showControls, setShowControls] = useState(false);
     const [sliderPosition, setSliderPosition] = useState(0);
+    const [touchStart, setTouchStart] = useState(null);
+    const [touchEnd, setTouchEnd] = useState(null);
     const bookmarkedMovies = useSelector((state) => state.netflix.bookmarkedMovies);
     const listRef = useRef();
 
+    // Slider change in window's
     const handleDirection = (direction) => {
         let distance = listRef.current.getBoundingClientRect().x - 70;
         if(direction === "left" && sliderPosition > 0) {
-                listRef.current.style.transform = `translateX(${230 + distance + 40}px)`;
-                setSliderPosition(sliderPosition - 1)
+              listRef.current.style.transform = `translateX(${230 + distance + 40}px)`;
+              setSliderPosition(sliderPosition - 1)
             }
             if(direction === "right" && sliderPosition < 3) {
             listRef.current.style.transform = `translateX(${-230 + distance}px)`;
             setSliderPosition(prevState => prevState + 1)
         }
     };
+
+ // the required distance between touchStart and touchEnd to be detected as a swipe
+  const minSwipeDistance = 50 
+
+  const onTouchStart = (e) => {
+      setTouchEnd(null) // otherwise the swipe is fired even with usual touch events
+      setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX)
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > minSwipeDistance
+    const isRightSwipe = distance < -minSwipeDistance
+    if(isLeftSwipe) {
+      listRef.current.style.transform = `translateX(${touchStart - distance}px)`;
+    }
+    if(isRightSwipe) {
+      listRef.current.style.transform = `translateX(${touchStart + distance}}px)`;
+    }
+    // add your conditional logic here
+  }
 
     return (
         <Container className="flex column" onMouseEnter={()=> setShowControls(true)} onMouseLeave={()=> setShowControls(true)}>
@@ -31,7 +58,7 @@ export default function CardSlider({ type, data }) {
                 <div className={`slider-action left ${ !showControls ? "none" : ""} flex j-center a-center`}>
                     <AiOutlineLeft onClick={()=> handleDirection("left")} />
                 </div>
-                <div className="flex slider" ref={listRef}>
+                <div className="flex slider" ref={listRef} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} >
                 {!data.length ? <NotAvailable alert={"Data not available"} />  :
                 data.map((movie, index) => {
                     return <Card movieData={movie} index={index} key={movie.id} isLiked={bookmarkedMovies?.some(({id}) => id === movie.id)} />
