@@ -64,10 +64,14 @@ function Navbar({isScrolled}) {
                         <AiOutlineCloseSquare />
                     </button>
                 </div>}
-                <form onSubmit={e => {e.preventDefault(); searchMovies(searchInput)}}>
+                <form onSubmit={e => {e.preventDefault(); searchMovies(searchInput); setMenuOpen(false);  setMenuTransitionClass("menu-overlay_close"); setTimeout(() => {
+                      setMenuTransitionClass("")
+                    }, 300)}}>
                     <div className={`search ${showSearch ? 'show-search' : ''}`}>
                     <button type="button" onFocus={() => setShowSearch(true)} onBlur={() => { if(!inputHover) setShowSearch(false)}}>
-                        <FaSearch onClick={(e)=> {searchMovies(searchInput)}}/>
+                        <FaSearch onClick={(e)=> {searchMovies(searchInput); setMenuOpen(false); setMenuTransitionClass("menu-overlay_close"); setTimeout(() => {
+                      setMenuTransitionClass(""); 
+                    }, 300)}}/>
                     </button>
                     <input type="text" placeholder="Search" onFocus={()=> {setInputHover(true)}} onBlur={() =>
                     {

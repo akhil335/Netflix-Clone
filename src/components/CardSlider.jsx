@@ -10,9 +10,9 @@ export default function CardSlider({ type, data }) {
     const [sliderPosition, setSliderPosition] = useState(0);
     const [touchStart, setTouchStart] = useState(null);
     const [touchEnd, setTouchEnd] = useState(null);
+    const [slideChange, setSlideChange] = useState(null);
     const bookmarkedMovies = useSelector((state) => state.netflix.bookmarkedMovies);
     const listRef = useRef();
-
     // Slider change in window's
     const handleDirection = (direction) => {
         let distance = listRef.current.getBoundingClientRect().x - 70;
@@ -26,39 +26,32 @@ export default function CardSlider({ type, data }) {
         }
     };
 
- // the required distance between touchStart and touchEnd to be detected as a swipe
-  const minSwipeDistance = 50 
-
-  const onTouchStart = (e) => {
-      setTouchEnd(null) // otherwise the swipe is fired even with usual touch events
-      setTouchStart(e.targetTouches[0].clientX)
-  }
-
-  const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX)
-
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return
-    const distance = touchStart - touchEnd
-    const isLeftSwipe = distance > minSwipeDistance
-    const isRightSwipe = distance < -minSwipeDistance
-    if(isLeftSwipe) {
-      listRef.current.style.transform = `translateX(${touchStart - distance}px)`;
+    // Slider for touch screen
+    const onTouchstart = (e) => {
+      setTouchStart(e.touches[0].clientX)
     }
-    if(isRightSwipe) {
-      listRef.current.style.transform = `translateX(${touchStart + distance}}px)`;
+    const onTouchMove = (e) => {
+      setTouchEnd(e.touches[0].clientX)
     }
-    // add your conditional logic here
-  }
+    const onTouchEnd = () => {
+      let distance = listRef.current.getBoundingClientRect().x - 40;
+      console.log(listRef.current.children[0].offsetWidth + distance + 37)
+      if(touchStart > touchEnd && listRef.current.children[0].offsetWidth - distance - 3 >= 0) {
+        listRef.current.style.transform = `translateX(-${listRef.current.children[0].offsetWidth - distance - 3}px)`;
+      }
+      if(touchStart < touchEnd && listRef.current.children[0].offsetWidth + distance + 37 <= 0) {
+        listRef.current.style.transform = `translateX(${listRef.current.children[0].offsetWidth + distance + 37}px)`;
+      }
+    }
 
     return (
         <Container className="flex column" onMouseEnter={()=> setShowControls(true)} onMouseLeave={()=> setShowControls(true)}>
             <h1>{type}</h1>
-
             <div className="wrapper">
                 <div className={`slider-action left ${ !showControls ? "none" : ""} flex j-center a-center`}>
                     <AiOutlineLeft onClick={()=> handleDirection("left")} />
                 </div>
-                <div className="flex slider" ref={listRef} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} >
+                <div className="flex slider" ref={listRef} onTouchStart={(e)=>onTouchstart(e)} onTouchMove={(e)=> onTouchMove(e)} onTouchEnd={onTouchEnd}>
                 {!data.length ? <NotAvailable alert={"Data not available"} />  :
                 data.map((movie, index) => {
                     return <Card movieData={movie} index={index} key={movie.id} isLiked={bookmarkedMovies?.some(({id}) => id === movie.id)} />
