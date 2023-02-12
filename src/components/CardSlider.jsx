@@ -39,7 +39,7 @@ export default function CardSlider({ type, data }) {
             600: {
               slidesPerView: 3,
             },
-            820: {
+            950: {
               slidesPerView: 4,
             },
             1180: {

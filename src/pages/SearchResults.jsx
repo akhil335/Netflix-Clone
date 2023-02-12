@@ -47,11 +47,19 @@ const Container = styled.div`
         .grid {
             gap: 1rem;
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(6, 1fr);
 
             div {
                 max-width: 100%;
                 width: 100%;
+            }
+        }
+    }
+    @media (min-width: 1024px) {
+        .content {
+    
+            .grid {
+                grid-template-columns: repeat(5, 1fr);
             }
         }
     }
@@ -69,7 +77,7 @@ const Container = styled.div`
             }
     
             .grid {
-                grid-template-columns: repeat(3,1fr);
+                grid-template-columns: repeat(3, 1fr);
             }
         }
     }
