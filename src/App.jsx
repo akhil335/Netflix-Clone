@@ -17,11 +17,11 @@ function App() {
       <Routes>
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/signup" element={<Signup />} />
-        {/* <Route exact path="/player" element={<Player />} /> */}
-        {/* <Route exact path="/movies" element={<Movies />} /> */}
-        {/* <Route exact path="/tv" element={<TvShows />} /> */}
-        {/* <Route exact path="/myList" element={<WatchList />} /> */}
-        {/* <Route exact path="search" element={<SearchResults />} /> */}
+        <Route exact path="/player" element={<Player />} />
+        <Route exact path="/movies" element={<Movies />} />
+        <Route exact path="/tv" element={<TvShows />} />
+        <Route exact path="/myList" element={<WatchList />} />
+        <Route exact path="search" element={<SearchResults />} />
         <Route exact path="/" element={<Netflix />} />
       </Routes>
       </BrowserRouter>

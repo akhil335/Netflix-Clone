@@ -1,68 +1,68 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import Card from "./Card";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import styled from "styled-components";
 import NotAvailable from "../pages/NotAvailable";
 import { useSelector } from "react-redux";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
 
 export default function CardSlider({ type, data }) {
-    const [showControls, setShowControls] = useState(false);
-    const [sliderPosition, setSliderPosition] = useState(0);
-    const [touchStart, setTouchStart] = useState(null);
-    const [touchEnd, setTouchEnd] = useState(null);
-    const [slideChange, setSlideChange] = useState(null);
     const bookmarkedMovies = useSelector((state) => state.netflix.bookmarkedMovies);
     const listRef = useRef();
-    // Slider change in window's
-    const handleDirection = (direction) => {
-        let distance = listRef.current.getBoundingClientRect().x - 70;
-        if(direction === "left" && sliderPosition > 0) {
-              listRef.current.style.transform = `translateX(${230 + distance + 40}px)`;
-              setSliderPosition(sliderPosition - 1)
-            }
-            if(direction === "right" && sliderPosition < 3) {
-            listRef.current.style.transform = `translateX(${-230 + distance}px)`;
-            setSliderPosition(prevState => prevState + 1)
-        }
-    };
-
-    // Slider for touch screen
-    const onTouchstart = (e) => {
-      setTouchStart(e.touches[0].clientX)
-    }
-    const onTouchMove = (e) => {
-      setTouchEnd(e.touches[0].clientX)
-    }
-    const onTouchEnd = () => {
-      let distance = listRef.current.getBoundingClientRect().x - 40;
-      console.log(listRef.current.children[0].offsetWidth + distance + 37)
-      if(touchStart > touchEnd && listRef.current.children[0].offsetWidth - distance - 3 >= 0) {
-        listRef.current.style.transform = `translateX(-${listRef.current.children[0].offsetWidth - distance - 3}px)`;
-      }
-      if(touchStart < touchEnd && listRef.current.children[0].offsetWidth + distance + 37 <= 0) {
-        listRef.current.style.transform = `translateX(${listRef.current.children[0].offsetWidth + distance + 37}px)`;
-      }
-    }
+    const isTouch = (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0)); 
 
     return (
-        <Container className="flex column" onMouseEnter={()=> setShowControls(true)} onMouseLeave={()=> setShowControls(true)}>
-            <h1>{type}</h1>
-            <div className="wrapper">
-                <div className={`slider-action left ${ !showControls ? "none" : ""} flex j-center a-center`}>
-                    <AiOutlineLeft onClick={()=> handleDirection("left")} />
-                </div>
-                <div className="flex slider" ref={listRef} onTouchStart={(e)=>onTouchstart(e)} onTouchMove={(e)=> onTouchMove(e)} onTouchEnd={onTouchEnd}>
-                {!data.length ? <NotAvailable alert={"Data not available"} />  :
-                data.map((movie, index) => {
-                    return <Card movieData={movie} index={index} key={movie.id} isLiked={bookmarkedMovies?.some(({id}) => id === movie.id)} />
-                })
-                }
-                </div>
-                <div className={`slider-action right ${ !showControls ? "none" : ""} flex j-center a-center`}>
-                    <AiOutlineRight onClick={()=> handleDirection("right")} />
-                </div>
-            </div>
-        </Container>
+        <Container ref={listRef} className="flex column">
+        <h1>{type}</h1>
+        <div className="wrapper">
+        <Swiper
+          // slidesPerView= {6}
+          // onSlideChange={() => console.log('slide change')}
+          // onSwiper={(swiper) => console.log(swiper)}
+          modules={[Navigation]}
+          navigation = {{
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          }}
+          breakpoints = {{
+            280: {
+              slidesPerView: 2,
+               // width: perCardsDimension[0],
+              // spaceBetween: 30
+            },
+            600: {
+              slidesPerView: 3,
+            },
+            820: {
+              slidesPerView: 4,
+            },
+            1180: {
+              slidesPerView: 5,
+            },
+            1420: {
+              slidesPerView: 6,
+            }
+          }}
+        >
+        {!data.length ? <NotAvailable alert={"Data not available"} />  :
+          data.map((movie, index) => {
+              return (
+              <SwiperSlide key={movie.id}>
+                <Card movieData={movie} index={index} key={movie.id} isLiked={bookmarkedMovies?.some(({id}) => id === movie.id)} />
+              </SwiperSlide>
+          )}
+        )}
+        {!isTouch && <div className="swiper-button-prev"><AiOutlineLeft /></div>}
+        {!isTouch && <div className="swiper-button-next"><AiOutlineRight /></div>}
+        </Swiper>
+        </div>
+      </Container>
     )
 }
 
@@ -71,13 +71,28 @@ user-select: none;
   gap: 1rem;
   position: relative;
   padding: 2rem 0;
+  width: 100%;
   h1 {
-    margin-left: 50px;
+    margin-left: 10px;
   }
   .wrapper {
     position: relative;
-    width: 100%;
     overflow-x: clip;
+    margin-left: 1rem;
+
+    .swiper {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+
+      .swiper-button-prev {
+        left: 0px;
+        color: red;
+      }
+      .swiper-button-next {
+        color: red;
+      }
+    }
     .slider-action {
       position: absolute;
       display: flex;
@@ -101,7 +116,10 @@ user-select: none;
       right: 0;
     }
     .slider {
-      width: calc(100% / 0.17);
+      width: max-content;
+      min-width: 100%;
+      min-height: 100px;
+      height: fit-content;
       gap: 1rem;
       transform: translateX(0px);
       transition: 0.3s transform ease-in-out;
@@ -112,12 +130,18 @@ user-select: none;
   @media (max-width: 540px) {
     h1 {
       font-size: 1.2rem;
-      margin-left: 20px;
+      margin-left: 0px;
     }
     .wrapper {
-      .slider {
-        margin-left: 20px;
-      }
+        margin-left: 0px;
+        .swiper-wrapper {
+          margin-left: 0.5rem;
+          .swiper-slide {
+            .card {
+              width: 90%;
+            }
+          }
+        }
     }
   }
 

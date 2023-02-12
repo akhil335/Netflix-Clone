@@ -55,7 +55,7 @@ const Container = styled.div`
         .grid {
             gap: 1rem;
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(6, 1fr);
 
             div {
                 max-width: 100%;
