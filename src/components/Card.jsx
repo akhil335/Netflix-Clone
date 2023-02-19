@@ -19,6 +19,7 @@ export default function Card({ movieData, isLiked = false}) {
     const userInfo = useSelector((state) => state.netflix.user);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const isTouch = (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0)); 
 
     // User email saving in email state
     useEffect(() => {
@@ -36,14 +37,19 @@ export default function Card({ movieData, isLiked = false}) {
         }
     }
 
-    return <Container className="card" onMouseEnter={()=>setIsHovered(true)} onMouseLeave={()=>setIsHovered(false)}>
-        <img src={`https://image.tmdb.org/t/p/w500${movieData.image}`} alt={movieData.name} loading="lazy" />
+    // redirecting to movie info page
+    const handleMovieInfoPage = () => {
+       return navigate("/movie-details", {state : {movieData}})
+    }
 
+    return <Container className="card" onMouseEnter={()=>setIsHovered(true)} onMouseLeave={()=>setIsHovered(false)} onClick={()=> { if(isTouch) handleMovieInfoPage() }}>
+        {/* {console.log(movieData, 'card')} */}
+        <img src={`https://image.tmdb.org/t/p/w500${movieData.image}`} alt={movieData.name} loading="lazy" />
         { isHovered && (
             <div className="hover">
                 <div className="image-video-container">
                     <img src={`https://image.tmdb.org/t/p/w500${movieData.image}`} alt={movieData.name} onClick={ ()=> navigate("/player") } loading="lazy" />
-                    <video src={ video } autoPlay muted loop onClick={ ()=> navigate("/player") } />
+                    <video src={ video } autoPlay muted loop onClick={ handleMovieInfoPage } />
                 </div>
                 <div className="info-container flex-column">
                     <h3 className="name" onClick={()=> navigate("/player")}>
@@ -61,13 +67,13 @@ export default function Card({ movieData, isLiked = false}) {
                             }
                         </div>
                         <div className="info">
-                            <BiChevronDown title="More Info" />
+                            <BiChevronDown title="More Info" onClick={ handleMovieInfoPage } />
                         </div>
                     </div>
                     <div className="genres flex">
                         <ul className="flex">
                             {
-                                movieData?.genres.map((genre) =>
+                                movieData.genres?.slice(0, 3)?.map((genre) =>
                                     <li key={genre}>{genre}</li>
                                 )
                             }

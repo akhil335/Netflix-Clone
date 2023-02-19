@@ -20,7 +20,6 @@ function Netflix() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(userInfo());
     dispatch(getGenres());
     console.log()
   }, [dispatch]);

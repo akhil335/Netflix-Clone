@@ -33,10 +33,13 @@ function Navbar({isScrolled}) {
     });
 
     // Dispatching search input to redux store and getting results
-    const searchMovies = async(searchInput) => {
-      dispatch(fetchSearchData(searchInput))
-      setSearchInput('');
-      navigate("/search");
+    const searchMovies = (searchInput) => {
+      console.log(searchInput.length)
+      if(searchInput.length > 0) {
+        dispatch(fetchSearchData(searchInput))
+        navigate("/search");
+      }
+      setSearchInput('');   
     }
 
   return <Container>

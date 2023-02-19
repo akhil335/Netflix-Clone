@@ -9,6 +9,7 @@ import TvShows from "./pages/TvShows";
 import WatchList from "./pages/WatchList";
 import SearchResults from "./pages/SearchResults";
 import { HelmetProvider } from "react-helmet-async";
+import SelectedMovieInfo from "./pages/SelectedMovieInfo"
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route exact path="/tv" element={<TvShows />} />
         <Route exact path="/myList" element={<WatchList />} />
         <Route exact path="search" element={<SearchResults />} />
+        <Route exact path="movie-details" element={<SelectedMovieInfo />} />
         <Route exact path="/" element={<Netflix />} />
       </Routes>
       </BrowserRouter>

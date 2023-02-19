@@ -4,7 +4,6 @@ import { getGenres } from "../store";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import Card from "../components/Card";
-import NotAvailable from "./NotAvailable";
 import { PageTitle } from "../components/Helmet";
 
 export default function SearchResults() {
@@ -57,7 +56,6 @@ const Container = styled.div`
     }
     @media (min-width: 1024px) {
         .content {
-    
             .grid {
                 grid-template-columns: repeat(5, 1fr);
             }

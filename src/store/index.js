@@ -9,7 +9,9 @@ const initialState = {
     genres: [],
     user: null,
     bookmarkedMovies: [],
-    searchedData: []
+    searchedData: [],
+    selectedCardVideoData: [],
+    recommendedMoviesData: []
 }
 
 export const getGenres = createAsyncThunk("netflix/genres", async ()=> {
@@ -18,22 +20,42 @@ export const getGenres = createAsyncThunk("netflix/genres", async ()=> {
 })
 
 const createArrayFromRawData = (array, moviesArray, genres) => {
-  array?.forEach((movie) => {
-    const movieGenres = [];
-    movie.genre_ids?.forEach((genre) => {
-      const name = genres?.find(({ id }) => id === genre);
-      if (name) movieGenres.push(name.name);
-    });
-    if (movie.backdrop_path) {
-      moviesArray.push({
-        id: movie.id,
-        name: movie?.original_name ? movie.original_name : movie.original_title,
-        image: movie.backdrop_path,
-        genres: movieGenres.slice(0, 3),
-      });
+    
+    array?.forEach( async (movie) => {
+        const movieGenres = [];
+        movie.genre_ids?.forEach((genre) => {
+            const genere_name = genres?.find(({ id }) => id === genre);
+            if (genere_name) movieGenres.push(genere_name.name);
+        });
+        if (movie.backdrop_path ) {
+            moviesArray.push({
+            id: movie.id,
+            media_type: movie.media_type,
+            name: movie?.original_name ? movie.original_name : movie.original_title,
+            image: movie.backdrop_path,
+            genres: movieGenres,
+            overview: movie.overview,
+            release_date: movie.release_date,
+        });  
     }
 });
 };
+
+// Fetch selected video url
+export const getSelectedCardInfo = createAsyncThunk("netflix/cardInfo", async ({type, id}) => {
+    const {data: {videos : {results}}} = await axios.get(`${TMBD_BASE_URL}/${type}/${id}?api_key=${API_KEY}&append_to_response=videos`);
+    return results.filter((url) => url.type === 'Trailer');
+});
+
+// Fetching recommnedation for selected movie/series
+export const getRecommendedMovies = createAsyncThunk("netflix/recommendedMovies", async ({type, id}, thunkApi) => {
+    const { netflix: { genres }} = thunkApi.getState();
+    const {data: {results}} = await axios.get(`${TMBD_BASE_URL}/${type}/${id}/recommendations?api_key=${API_KEY}&language=en-US&page=1`);
+    const moviesArray = [];
+    createArrayFromRawData(results, moviesArray, genres)
+    return moviesArray;
+});
+
 const getRawData = async (api, genres, paging) => {
     const moviesArray = [];
     for(let i=1; moviesArray.length < 60 && i < 10; i++) {
@@ -57,6 +79,7 @@ export const fetchCategory = createAsyncThunk("netflix/movies", async ({category
     return data;
 });
 
+// Fetching genre to for converting genre id to readable format eg. action, romance
 export const fetchDataByGenre = createAsyncThunk("netflix/moviesByGenre", async ({genre, type}, thunkApi) => {
     const { netflix: { genres }} = thunkApi.getState();
     const data =  getRawData(`${TMBD_BASE_URL}/discover/${type}?api_key=${API_KEY}&with_genres=${genre}`, genres, true);
@@ -93,8 +116,6 @@ export const removeUseLikesMovies = createAsyncThunk("netflix/removeLikedMovies"
 // Fetching data for Search Keywords
 export const fetchSearchData = createAsyncThunk("netflix/fetchSearchData", async ( searchInput, thunkApi ) => {
     const { netflix: { genres }} = thunkApi.getState();
-    let { netflix: { searchedData }} = thunkApi.getState();
-    searchedData = [];
     const results =  getRawData(`${TMBD_BASE_URL}/search/multi?api_key=${API_KEY}&language=en-US&query=${searchInput}&page=1&include_adult=false`, genres, true);
     return results;
 }); 
@@ -127,7 +148,13 @@ const NeflixSlice = createSlice({
         })
         builder.addCase(fetchSearchData.fulfilled, (state, action) => {
             state.searchedData = action.payload;
-            console.log(state.searchedData)
+        })
+        builder.addCase(getSelectedCardInfo.fulfilled, (state, action) => {
+            state.selectedCardVideoData = action.payload;
+            console.log(state.selectedCardVideoData)
+        })
+        builder.addCase(getRecommendedMovies.fulfilled, (state, action) => {
+            state.recommendedMoviesData = action.payload.slice(0, 6);
         })
     }
 })
