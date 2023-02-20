@@ -43,9 +43,8 @@ export default function Card({ movieData, isLiked = false}) {
     }
 
     return <Container className="card" onMouseEnter={()=>setIsHovered(true)} onMouseLeave={()=>setIsHovered(false)} onClick={()=> { if(isTouch) handleMovieInfoPage() }}>
-        {/* {console.log(movieData, 'card')} */}
         <img src={`https://image.tmdb.org/t/p/w500${movieData.image}`} alt={movieData.name} loading="lazy" />
-        { isHovered && (
+        { !isTouch && isHovered && (
             <div className="hover">
                 <div className="image-video-container">
                     <img src={`https://image.tmdb.org/t/p/w500${movieData.image}`} alt={movieData.name} onClick={ ()=> navigate("/player") } loading="lazy" />

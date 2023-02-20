@@ -2,13 +2,42 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import Navbar from "../components/Navbar"
-import { Rating } from "@mui/material";
-import Stack from '@mui/material/Stack';
+import Navbar from "../components/Navbar";
 import YouTube from "react-youtube";
-import { getRecommendedMovies, getSelectedCardInfo } from "../store";
+import { getRecommendedMovies, getSelectedCardTrailer } from "../store";
 import Card from "../components/Card";
+import CircularProgress from '@mui/material/CircularProgress';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
+function CircularProgressWithLabel(props) {
+    return (
+      <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+        <CircularProgress variant="determinate" {...props} style={{ color: 'red' }} />
+        <Box
+          sx={{
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            position: 'absolute',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Typography
+            variant="caption"
+            component="div"
+            color="white"
+            sx={{
+                margin: 'auto'
+              }}
+          >{(props.value).toFixed(1)}</Typography>
+        </Box>
+      </Box>
+    );
+  }
 
 export default function SearchResults() {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -21,7 +50,8 @@ export default function SearchResults() {
 
     useEffect(()=> {
         dispatch((getRecommendedMovies({type: 'movie', id: movie.id})))
-        dispatch((getSelectedCardInfo({type: 'movie', id: movie.id})))
+        dispatch((getSelectedCardTrailer({type: 'movie', id: movie.id})))
+        console.log(movie)
     }, [dispatch, movie])
 
     window.onscroll = () => {
@@ -48,13 +78,11 @@ export default function SearchResults() {
                         }
                     </div>
                     <div className="ratings flex">
-                        Ratings:
-                        <Stack spacing={1} className="d-flex">
-                            <Rating name="half-rating-read" defaultValue={4.7} precision={0.5} readOnly /><span>4.7</span>
-                        </Stack>
+                        Average Vote:
+                        <CircularProgressWithLabel value={movie.vote_average} />
                     </div>
                     <div className="release-info">
-                        <span>Release Date</span>: 2022
+                        <span>Release Date</span>: {movie.release_date ? new Date(movie.release_date).toLocaleDateString() : ''}
                     </div>
                 </div>
             </div>
@@ -114,27 +142,34 @@ const Container = styled.div`
     @media (max-width: 540px) {
         .trailer-section {
             margin: 1rem;
-
+            h2 {
+                font-size: 1.5rem;
+            }
             .youtube-player {
-                margin-top: 0rem;
+                margin-top: 0.5rem;
                 .video {
 
                     iframe {
                         width: 100%;
+                        height: auto;
+                        aspect-ratio: 3/2;
                     }
                 }
             }
         }
         .recommendation-section {
             margin: 1rem;
-        
+            h2 {
+                font-size: 1.5rem;
+            }
             .recommend-card {
                 flex-wrap: wrap;
                 gap: 1rem;
         
                 .card {   
-                    width: calc(100% / 2 - 16px);
-                    min-width: 163px;
+                    width: 100%;
+                    min-width: 10%;
+                    max-width: 47%;
                 }
             }
         }
@@ -206,6 +241,27 @@ const MovieInfo = styled.div`
             .movie-info {
                 h2 {
                     font-size: 1.5rem;
+                }
+                p {
+                    font-size: 1rem;
+                }
+            }
+        }
+    }
+    @media (max-width: 800px) {
+        .movie-details-container {
+            grid-template-columns: 1fr;
+            margin-top: 4rem;
+
+            .movie-img {
+                img {
+                    width: 300px;
+                    margin: auto;
+                }
+            }
+            .movie-info {
+                h2 {
+                    font-size: 2rem;
                 }
                 p {
                     font-size: 1rem;

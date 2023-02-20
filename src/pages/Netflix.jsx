@@ -21,7 +21,6 @@ function Netflix() {
 
   useEffect(() => {
     dispatch(getGenres());
-    console.log()
   }, [dispatch]);
 
   useEffect(()=> {

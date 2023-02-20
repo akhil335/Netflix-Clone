@@ -36,14 +36,15 @@ const createArrayFromRawData = (array, moviesArray, genres) => {
             genres: movieGenres,
             overview: movie.overview,
             release_date: movie.release_date,
+            vote_average: movie.vote_average
         });  
     }
 });
 };
 
 // Fetch selected video url
-export const getSelectedCardInfo = createAsyncThunk("netflix/cardInfo", async ({type, id}) => {
-    const {data: {videos : {results}}} = await axios.get(`${TMBD_BASE_URL}/${type}/${id}?api_key=${API_KEY}&append_to_response=videos`);
+export const getSelectedCardTrailer = createAsyncThunk("netflix/cardInfo", async ({type, id}) => {
+    const {data: {videos : {results}}} = await axios.get(`${TMBD_BASE_URL}/${type}/${id}?api_key=${API_KEY}&append_to_response=videos`)
     return results.filter((url) => url.type === 'Trailer');
 });
 
@@ -56,6 +57,7 @@ export const getRecommendedMovies = createAsyncThunk("netflix/recommendedMovies"
     return moviesArray;
 });
 
+// Storing total of 60 movies info for netflix home showing
 const getRawData = async (api, genres, paging) => {
     const moviesArray = [];
     for(let i=1; moviesArray.length < 60 && i < 10; i++) {
@@ -73,6 +75,7 @@ export const fetchMovies = createAsyncThunk("netflix/trending", async ({type}, t
     return data;
 });
 
+// Fetching categories
 export const fetchCategory = createAsyncThunk("netflix/movies", async ({category, type}, thunkApi) => {
     const { netflix: { genres }} = thunkApi.getState();
     const data =  getRawData(`${TMBD_BASE_URL}/${category}/${type}?api_key=${API_KEY}`, genres, true);
@@ -149,9 +152,8 @@ const NeflixSlice = createSlice({
         builder.addCase(fetchSearchData.fulfilled, (state, action) => {
             state.searchedData = action.payload;
         })
-        builder.addCase(getSelectedCardInfo.fulfilled, (state, action) => {
+        builder.addCase(getSelectedCardTrailer.fulfilled, (state, action) => {
             state.selectedCardVideoData = action.payload;
-            console.log(state.selectedCardVideoData)
         })
         builder.addCase(getRecommendedMovies.fulfilled, (state, action) => {
             state.recommendedMoviesData = action.payload.slice(0, 6);
