@@ -11,9 +11,11 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 function CircularProgressWithLabel(props) {
+    const vote = props.vote
+    console.log(vote, typeof vote)
     return (
       <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-        <CircularProgress variant="determinate" {...props} style={{ color: 'red' }} />
+        <CircularProgress variant="determinate"  style={{ color: '#4bff00' }} value={props.value * 10} />
         <Box
           sx={{
             top: 0,
@@ -79,7 +81,7 @@ export default function SearchResults() {
                     </div>
                     <div className="ratings flex">
                         Average Vote:
-                        <CircularProgressWithLabel value={movie.vote_average} />
+                        <CircularProgressWithLabel value={movie.vote_average} vote={movie.vote_average} />
                     </div>
                     <div className="release-info">
                         <span>Release Date</span>: {movie.release_date ? new Date(movie.release_date).toLocaleDateString() : ''}
