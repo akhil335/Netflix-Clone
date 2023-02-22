@@ -47,7 +47,7 @@ export default function Card({ movieData, isLiked = false}) {
         { !isTouch && isHovered && (
             <div className="hover">
                 <div className="image-video-container">
-                    <img src={`https://image.tmdb.org/t/p/w500${movieData.image}`} alt={movieData.name} onClick={ ()=> navigate("/player") } loading="lazy" />
+                    <img src={`https://image.tmdb.org/t/p/w500${movieData.image}`} alt={movieData.name} onClick={ ()=> handleMovieInfoPage() } loading="lazy" />
                     {/* <video src={ video } autoPlay muted loop onClick={ handleMovieInfoPage } /> */}
                 </div>
                 <div className="info-container flex-column">
