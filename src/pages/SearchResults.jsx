@@ -13,8 +13,7 @@ export default function SearchResults() {
     const dispatch = useDispatch();
   
     useEffect(() => {
-      dispatch(getGenres())
-      console.log(searchData, 'search')
+      dispatch(getGenres());
     }, [dispatch, searchData]);
     
     window.onscroll = () => {

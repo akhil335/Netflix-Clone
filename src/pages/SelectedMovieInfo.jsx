@@ -44,13 +44,13 @@ export default function SearchResults() {
     const location = useLocation();
     const dispatch = useDispatch();
     const { state: {movieData: movie}  } = location;
-    const recommendMovie = useSelector(state => state.netflix.recommendedMoviesData)
-    const bookmarkedMovies = useSelector(state => state.netflix.bookmarkedMovies)
-    const cardVideoUrl = useSelector(state => state.netflix.selectedCardVideoData)
+    const recommendMovie = useSelector(state => state.netflix.recommendedMoviesData);
+    const bookmarkedMovies = useSelector(state => state.netflix.bookmarkedMovies);
+    const cardVideoUrl = useSelector(state => state.netflix.selectedCardVideoData);
 
     useEffect(()=> {
-        dispatch((getRecommendedMovies({type: 'movie', id: movie.id})))
-        dispatch((getSelectedCardTrailer({type: 'movie', id: movie.id})))
+        dispatch((getRecommendedMovies({type: movie.media_type, id: movie.id})));
+        dispatch((getSelectedCardTrailer({type: movie.media_type, id: movie.id})));
     }, [dispatch, movie])
 
     window.onscroll = () => {
@@ -89,7 +89,7 @@ export default function SearchResults() {
         <div className="trailer-section">
             <h2>Watch Latest Trailer</h2>
             <div className="youtube-player">
-                <YouTube videoId={cardVideoUrl[0]?.key} className="video" />
+                <YouTube videoId={cardVideoUrl[0]?.key} className="video" enablejsapi={true} />
             </div>
         </div>
         <div className="recommendation-section">

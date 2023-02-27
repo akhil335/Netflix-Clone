@@ -19,7 +19,6 @@ function Signup() {
   const handleSignIn = async () =>{
     try {
       const { email, password } = formValue;
-      console.log(email, password, formValue);
       await createUserWithEmailAndPassword(firebaseAuth, email, password)
     } catch (error) {
       return error;

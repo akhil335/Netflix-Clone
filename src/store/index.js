@@ -30,14 +30,14 @@ const createArrayFromRawData = (array, moviesArray, genres) => {
         if (movie.backdrop_path ) {
             moviesArray.push({
             id: movie.id,
-            media_type: movie.media_type,
+            media_type: movie.first_air_date ? 'tv' : 'movie',
             name: movie?.original_name ? movie.original_name : movie.original_title,
             image: movie.backdrop_path,
             genres: movieGenres,
             overview: movie.overview,
-            release_date: movie.release_date,
+            release_date: movie.release_date ? movie.release_date : movie.first_air_date,
             vote_average: movie.vote_average
-        });  
+        });
     }
 });
 };

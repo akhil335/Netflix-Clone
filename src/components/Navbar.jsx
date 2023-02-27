@@ -34,7 +34,6 @@ function Navbar({isScrolled}) {
 
     // Dispatching search input to redux store and getting results
     const searchMovies = (searchInput) => {
-      console.log(searchInput.length)
       if(searchInput.length > 0) {
         dispatch(fetchSearchData(searchInput))
         navigate("/search");
@@ -46,7 +45,7 @@ function Navbar({isScrolled}) {
     <nav className={`flex ${isScrolled ? 'scrolled' : ""}`}>
         <div className="left flex a-center">
             <div className="brand flex a-center j-center">
-                <img src={logo} alt="logo" loading="lazy" />
+                <img src={logo} alt="logo" loading="lazy" onClick={ () => navigate("/")} />
             </div>
             <ul className="links flex">
                 {
@@ -125,6 +124,7 @@ const Container = styled.div`
       .brand {
         img {
           height: 2.5rem;
+          cursor: pointor;
         }
       }
       .links {
@@ -185,13 +185,6 @@ const Container = styled.div`
             padding: 0.3rem;
           }
         }
-            // svg {
-            //     display: block;
-            //     width: 45px;
-            //     height: 45px;
-            //     background: black;
-            //     color: red;
-            // }
       }
       .hamburgar {
         display: none;
@@ -215,14 +208,6 @@ const Container = styled.div`
         }
         .links {
           display: none;
-          //   background: black;
-          //   width: 90%;
-          //   position: absolute;
-          //   top: 0;
-          //   right: 0;
-          //   height: 100vh;
-          //   text-align: end;
-          //   padding: 1rem;
         }
       }
       .right {
@@ -342,7 +327,7 @@ const Container = styled.div`
   }
   @media (max-width: 912px) {
     nav {
-      padding: 2rem;
+      padding: 1rem
     }
   }
 `;
