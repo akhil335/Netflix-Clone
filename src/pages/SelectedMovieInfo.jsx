@@ -33,7 +33,7 @@ function CircularProgressWithLabel(props) {
             sx={{
                 margin: 'auto'
               }}
-          >{(props.value).toFixed(1)}</Typography>
+          >{(props.value)?.toFixed(1)}</Typography>
         </Box>
       </Box>
     );

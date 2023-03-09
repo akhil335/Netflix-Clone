@@ -37,7 +37,7 @@ export default function WatchList() {
                 <div className="grid flex">
                     {!bookmarkedMovies?.length ? <NotAvailable alert={"Not bookmarked anything.."} /> :
                         bookmarkedMovies?.map((movie, index) => {
-                            return <Card movieData={ movie } index={ index } key={ movie.id} isLiked={true} />
+                            return <Card movieData={ movie } index={ index } key={ movie.id } isLiked={true} />
                         })
                     }
                 </div>
